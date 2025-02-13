@@ -1,0 +1,46 @@
+.ql-snow .ql-picker {
+  color: white;
+}
+
+.ql-snow .ql-stroke {
+  stroke: white;
+}
+
+.ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+  fill: white;
+}
+
+.rte-content h1 {
+  font-size: 1.5rem;
+}
+
+.rte-content h2 {
+  font-size: 1.25rem;
+}
+
+.rte-content h3 {
+  font-size: 1.125rem;
+}
+
+.rte-content ol,
+.rte-content ul {
+  list-style-position: inside;
+}
+
+.rte-content ol {
+  list-style-type: decimal;
+}
+
+.rte-content ul {
+  list-style-type: disc;
+}
+
+.rte-content a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.rte-content a:hover {
+  text-decoration: underline;
+}
