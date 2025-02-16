@@ -15,6 +15,15 @@ function dd($value)
   die;
 }
 
+function setLog($activity)
+{
+  global $conn;
+
+  $query = "INSERT INTO log VALUES (null, '$activity', NOW())";
+
+  mysqli_query($conn, $query);
+}
+
 function signup($data)
 {
   global $conn;
@@ -62,6 +71,12 @@ function createNews($data)
 {
   global $conn;
   global $userId;
+  $user = query("SELECT * FROM user WHERE id = $userId")[0]['username'];
+
+
+  if (!$user) {
+    return false;
+  }
 
   $title = htmlspecialchars($data['title']);
   $content = $data['content'];
@@ -74,6 +89,8 @@ function createNews($data)
 
   $query = "INSERT INTO news VALUES (null,'$title', '$content', '$image', '$category', NOW(), NOW(), '$userId')";
   mysqli_query($conn, $query);
+
+  setLog("$user Create news with title $title");
 
   return mysqli_affected_rows($conn);
 }
@@ -124,13 +141,21 @@ function uploadImage()
 function deleteNews($id)
 {
   global $conn;
+  global $userId;
+
+  $user = query("SELECT * FROM user WHERE id = $userId")[0]['username'];
+
+  if (!$user) {
+    return false;
+  }
 
   $news = query("SELECT * FROM news WHERE id = $id")[0];
-
 
   mysqli_query($conn, "DELETE FROM news WHERE id = $id");
 
   unlink('../images/' . $news['image']);
+
+  setLog("$user Delete news with title $news[title]");
 
   return mysqli_affected_rows($conn);
 }
@@ -138,8 +163,13 @@ function deleteNews($id)
 function editNews($data)
 {
   global $conn;
+  global $userId;
 
-  // dd($data);
+  $user = query("SELECT * FROM user WHERE id = $userId")[0]['username'];
+
+  if (!$user) {
+    return false;
+  }
 
   $id = $data["id"];
   $title = htmlspecialchars($data['title']);
@@ -155,6 +185,8 @@ function editNews($data)
 
   $query = "UPDATE news SET title= '$title', content = '$content', category = '$category', image = '$image', updated_at = NOW() WHERE id = $id";
   mysqli_query($conn, $query);
+
+  setLog("$user Edit news with title $title");
 
   return mysqli_affected_rows($conn);
 }
